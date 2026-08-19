@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventario</title>
+
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    📦
+                </div>
+
+                <div>
+                    <h1>Inventario</h1>
+                    <span>Product Manager</span>
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-buttons">
+                
+                <button
+                    id="btnListar"
+                    class="nav-button active"
+                    type="button"
+                >
+                    <span>☷</span>
+                    Listar
+                </button>
+
+                <button
+                    id="btnAgregar"
+                    class="nav-button"
+                    type="button"
+                >
+                    <span>＋</span>
+                    Agregar
+                </button>
+
+
+
+
+            </div>
+
+
+            <div class="sidebar-footer">
+
+                <span>Inventory System</span>
+                <small>v1.0</small>
+
+            </div>
+
+        </aside>
+
+
+        <!-- CONTENIDO -->
+
+        <main class="main-content">
+
+
+            <!-- ============================= -->
+            <!-- PANEL AGREGAR -->
+            <!-- ============================= -->
+
+            <section
+                id="panelAgregar"
+                class="panel hidden"
+            >
+
+                <div class="page-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            INVENTARIO
+                        </span>
+
+                        <h2>
+                            Agregar producto
+                        </h2>
+
+                        <p>
+                            Registra un nuevo producto en tu inventario.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <form id="productoForm">
+
+                        <div class="form-grid">
+
+
+                            <div class="input-group">
+
+                                <label for="nombre">
+                                    Nombre
+                                </label>
+
+                                <input
+                                    id="nombre"
+                                    type="text"
+                                    placeholder="Ej. Teclado mecánico"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="input-group">
+
+                                <label for="marca">
+                                    Marca
+                                </label>
+
+                                <input
+                                    id="marca"
+                                    type="text"
+                                    placeholder="Ej. Logitech"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="input-group full-width">
+
+                                <label for="descripcion">
+                                    Descripción
+                                </label>
+
+                                <textarea
+                                    id="descripcion"
+                                    placeholder="Describe el producto..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="input-group">
+
+                                <label for="precioCompra">
+                                    Precio de compra
+                                </label>
+
+                                <input
+                                    id="precioCompra"
+                                    type="number"
+                                    min="0"
+                                    placeholder="250000"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="input-group">
+
+                                <label for="precioVenta">
+                                    Precio de venta
+                                </label>
+
+                                <input
+                                    id="precioVenta"
+                                    type="number"
+                                    min="0"
+                                    placeholder="349900"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button
+                                type="reset"
+                                class="secondary-button"
+                            >
+                                Limpiar
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="primary-button"
+                            >
+                                Agregar producto
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- PANEL LISTAR -->
+            <!-- ============================= -->
+
+            <section
+                id="panelListar"
+                class="panel"
+            >
+
+                <div class="list-header">
+
+                    <div class="list-header-content">
+
+                        <div class="list-title">
+
+                            <div class="list-title-icon">
+                                📦
+                            </div>
+
+                            <div>
+                                <h2>Productos</h2>
+
+                                <p>
+                                    Gestiona y consulta tu inventario
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="product-count">
+                            <strong>0</strong>
+                            <span>productos</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- BUSCADORES -->
+
+                <div class="search-card">
+
+                    <div class="search-group">
+
+                        <label for="buscarNombre">
+                            Buscar por nombre
+                        </label>
+
+                        <input
+                            id="buscarNombre"
+                            type="text"
+                            placeholder="Ej. Teclado..."
+                        >
+
+                    </div>
+
+
+                    <div class="search-divider">
+                        o
+                    </div>
+
+
+                    <div class="search-group">
+
+                        <label for="buscarId">
+                            Buscar por ID
+                        </label>
+
+                        <input
+                            id="buscarId"
+                            type="number"
+                            placeholder="Ej. 1"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTOS -->
+
+                <div
+                    id="productosContainer"
+                    class="products-container"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ====================================== -->
+    <!-- MODAL DE EDICIÓN -->
+    <!-- ====================================== -->
+
+    <div
+        id="editModal"
+        class="modal-overlay hidden"
+    >
+
+        <div class="edit-modal">
+
+
+            <button
+                id="closeEditModal"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+                    ✎
+                </div>
+
+                <div>
+
+                    <span class="eyebrow">
+                        EDITAR PRODUCTO
+                    </span>
+
+                    <h2 id="editProductName">
+                        Producto
+                    </h2>
+
+                    <p id="editProductId">
+                        ID: -
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- OPCIONES -->
+
+            <div
+                id="editOptions"
+                class="edit-options"
+            >
+
+                <p class="modal-description">
+                    ¿Qué deseas modificar?
+                </p>
+
+
+                <button
+                    class="edit-option"
+                    data-field="nombre"
+                    type="button"
+                >
+                    <span class="option-icon">
+                        Aa
+                    </span>
+
+                    <span>
+                        <strong>Nombre</strong>
+                        <small>Cambiar nombre del producto</small>
+                    </span>
+
+                    <span class="option-arrow">
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    class="edit-option"
+                    data-field="marca"
+                    type="button"
+                >
+                    <span class="option-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        <strong>Marca</strong>
+                        <small>Cambiar marca</small>
+                    </span>
+
+                    <span class="option-arrow">
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    class="edit-option"
+                    data-field="descripcion"
+                    type="button"
+                >
+                    <span class="option-icon">
+                        ☰
+                    </span>
+
+                    <span>
+                        <strong>Descripción</strong>
+                        <small>Modificar descripción</small>
+                    </span>
+
+                    <span class="option-arrow">
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    class="edit-option"
+                    data-field="precio_compra"
+                    type="button"
+                >
+                    <span class="option-icon">
+                        $
+                    </span>
+
+                    <span>
+                        <strong>Precio de compra</strong>
+                        <small>Modificar precio de compra</small>
+                    </span>
+
+                    <span class="option-arrow">
+                        ›
+                    </span>
+                </button>
+
+
+                <button
+                    class="edit-option"
+                    data-field="precio_venta"
+                    type="button"
+                >
+                    <span class="option-icon">
+                        $
+                    </span>
+
+                    <span>
+                        <strong>Precio de venta</strong>
+                        <small>Modificar precio de venta</small>
+                    </span>
+
+                    <span class="option-arrow">
+                        ›
+                    </span>
+                </button>
+
+            </div>
+
+
+            <!-- CAMPO A EDITAR -->
+
+            <div
+                id="editFieldContainer"
+                class="edit-field-container hidden"
+            >
+
+                <button
+                    id="backToEditOptions"
+                    class="back-button"
+                    type="button"
+                >
+                    ← Volver
+                </button>
+
+
+                <label id="editFieldLabel">
+                    Campo
+                </label>
+
+
+                <input
+                    id="editFieldInput"
+                    type="text"
+                >
+
+
+                <textarea
+                    id="editFieldTextarea"
+                    class="hidden"
+                ></textarea>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        id="cancelEdit"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        id="saveEdit"
+                        class="primary-button"
+                        type="button"
+                    >
+                        Guardar cambios
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="./main.js?v=2"></script>
+
+</body>
+
+</html>

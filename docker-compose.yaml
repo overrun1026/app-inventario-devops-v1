@@ -1,0 +1,62 @@
+services:
+
+  database:
+    image: postgres:17-alpine
+    container_name: inventario-database
+
+    environment:
+      POSTGRES_DB: inventario_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+    restart: unless-stopped
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: inventario-backend
+
+    environment:
+      ENV_HOST: database
+      ENV_PORT: 5432
+      ENV_DATABASE: inventario_db
+      ENV_USER: postgres
+      ENV_PASSWORD: 123456
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - database
+
+    restart: unless-stopped
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: inventario-frontend
+
+    ports:
+      - "80:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+
+volumes:
+  postgres_data:
